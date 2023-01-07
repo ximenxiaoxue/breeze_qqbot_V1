@@ -252,6 +252,10 @@ class receive_messages(Send_operation):#多群喊话中转站
 class  Multi_group_shouting(): #实现多群喊话
 
     def Get_group_list(self):#获取群列表
+        #将列表清空，毕竟不清空下次就会再添加上，造成多次喊话
+        group_id_list.clear()
+        group_name_list.clear()
+
         url = 'http://127.0.0.1:5700/get_group_list'
         res = requests.get(url=url).json()
         message_group_list = res['data']

@@ -18,6 +18,5 @@ def multi_group_shouting(word): #实现多群喊话
         break
 
 
-if __name__ == '__main__':
-    multi_group_shouting()
+
 

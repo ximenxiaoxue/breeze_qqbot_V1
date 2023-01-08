@@ -7,7 +7,6 @@
 # separation:分离
 # ---------------------------------------------------------------------------------------------------
 print("正在进行预处理")
-
 # ---------------------------------------------------------------------------------------------------
 import time
 t1 = time.time()
@@ -16,7 +15,8 @@ import json  # 讲获取的消息进行字典化
 import socket  # 使用socket监听上报，接收各种消息
 import pandas as pd  # 准备实现本地词库
 import requests  # 发送消息及获取机器人回答
-
+import news_api #实现新闻
+import music_api#实现点歌
 # ---------------------------------------------------------------------------------------------------
 # 实现本地词库时使用
 
@@ -34,10 +34,7 @@ SK.listen(100)  # 开始监听
 # 用来回复go-cqhttp上报，防止黄色的上报指令的输出，以及不可操控的程序错误(测试的错误：不停地回复消息)
 HttpResponseHeader = '''HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n'''
 # ---------------------------------------------------------------------------------------------------
-# go-cqhttp各种语法操作所需的指令
-# 说实话有没有都一样，后面可以直接输上
-instruction = {'private': '/send_private_msg?', 'group': '/send_group_msg?', 'pd': 'user_id=', 'gd': 'group_id=',
-               'msg': 'message='}  # 发送消息
+# 发送消息
 # 存放获取的各种消息，以后有必要可能需要将各个消息存放的内容分开
 dict_receive = {'message_type': '', 'sender_msg': '', 'sender_name': '', 'sender_id': '', 'sender_msg_id': '',
                 'sender_group_id': '', 'sender_self_id': ''}
@@ -47,7 +44,7 @@ group_id_list = []
 group_name_list = []
 # ---------------------------------------------------------------------------------------------------
 t2 = time.time()
-print("预处理完毕，用时:"+str((t2-t1)*1000)[:5]+"毫秒" )
+print("预处理完毕，用时:"+str((t2-t1)*1000)[:8]+"毫秒" )
 # ---------------------------------------------------------------------------------------------------
 # 在这里进行消息之间的同道连接，以及获得的消息的第一步处理，进行字典化
 class Listener():  # 获取网页的json并获取消息
@@ -162,17 +159,15 @@ class Send_operation():  # 可视化获取的消息类别等
         # 输出逻辑回答的消息
         url = 'http://127.0.0.1:5700'
         if dict_receive['message_type'] == 'private':
-            urls = url + instruction['private'] + instruction['pd'] + dict_receive['sender_id'] + '&' + instruction[
-                'msg'] + msg
+            urls = url + "/send_private_msg?user_id=" + dict_receive['sender_id'] + '&' + 'message=' + msg
             answer_post_use = requests.post(url=urls).json()  # 发送消息
             print('>>>:' * 3 + "已回答:" + "\n " + msg)
             pass
         elif dict_receive['message_type'] == 'group':
 
-            urls = url + instruction['group'] + instruction['gd'] + dict_receive['sender_group_id'] + '&' + instruction[
-                'msg'] + msg
+            urls = url + '/send_group_msg?group_id=' + dict_receive['sender_group_id'] + '&' +"message=" + msg
             # print(urls)
-            answer_post_use = requests.post(url=urls).json()  # 发送消息
+            answer_post_use = requests.post(url=urls)  # 发送消息
             print('>>>:' * 3 + "已回答:" + "\n " + msg)
             pass
         else:
@@ -204,17 +199,25 @@ class answer_logic():  # 回复逻辑
             else:
                 pass
 
-        if dict_receive['sender_msg'] == "菜单":  # 回答消息的第二优先级
+        if dict_receive['sender_msg'] == "菜单" or dict_receive['sender_msg'] == "#":  # 回答消息的第二优先级
 
-            msg = "1.聊天\n2.多群喊话\n3.新闻"  # \n可以实现多行输出
+            msg = "1.聊天\n2.多群喊话\n3.新闻\n4.点歌(网抑云)"  # \n可以实现多行输出
             return msg
-        elif dict_receive['sender_msg'] == "多群喊话":  # 在此判断发消息人的QQ号
+        elif dict_receive['sender_msg'] == "多群喊话" or dict_receive['sender_msg'] == "#2":  # 在此判断发消息人的QQ号
             if '1732373074' == dict_receive['sender_id']:  # 防止别人发送(有缺陷，如果主人先发多群喊话，不管谁再发消息，都会喊)
                 msg = '接收消息中......'
                 return msg
             else:
                 msg = '您的等级不够'
                 return msg
+        elif dict_receive['sender_msg'] == "新闻" or dict_receive['sender_msg'] == "#3":
+            msg = news_api.news_api()
+            return msg
+
+        elif "点歌" in dict_receive['sender_msg'] :
+            musics_id = music_api.music_id(music_api.handle_content(dict_receive['sender_msg']))
+            msg = "[CQ:music,type=163,id={}]".format(musics_id)
+            return msg
 
         else:  # 回答消息的第三优先级
 

@@ -205,7 +205,7 @@ class answer_logic():  # 回复逻辑
 
         if dict_receive['sender_msg'] == "菜单":  # 回答消息的第二优先级
 
-            msg = "聊天\n  多群喊话  \n  继续加油  "  # \n可以实现多行输出
+            msg = "1.聊天\n2.多群喊话\n3.新闻"  # \n可以实现多行输出
             return msg
         elif dict_receive['sender_msg'] == "多群喊话":  # 在此判断发消息人的QQ号
             if '1732373074' == dict_receive['sender_id']:  # 防止别人发送(有缺陷，如果主人先发多群喊话，不管谁再发消息，都会喊)

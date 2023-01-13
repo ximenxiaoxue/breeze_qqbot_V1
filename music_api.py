@@ -8,9 +8,10 @@ music_collect = []
 
 
 def handle_content(word):  # handle:处理
+
     # 处理点歌的文字
     handle_after = word[2:]
-    print(handle_after)
+    #print(handle_after)
 
     return handle_after
 
@@ -34,7 +35,7 @@ def music_id(handle_after):
             #print(UID)
         return liz
     except:
-        msg = "分享系统错误"
+        msg = "遇到未知错误，准备记录错误消息以及时间"
         #print(msg)
         return msg
 

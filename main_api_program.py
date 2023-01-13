@@ -38,6 +38,10 @@ HttpResponseHeader = '''HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n'''
 # 存放获取的各种消息，以后有必要可能需要将各个消息存放的内容分开
 dict_receive = {'message_type': '', 'sender_msg': '', 'sender_name': '', 'sender_id': '', 'sender_msg_id': '',
                 'sender_group_id': '', 'sender_self_id': ''}
+# 用副本字典准备使用多线程，讲多群喊话与正常的聊天分隔开
+dict_receive_copy = {'message_type': '', 'sender_msg': '', 'sender_name': '', 'sender_id': '', 'sender_msg_id': '',
+                'sender_group_id': '', 'sender_self_id': ''}
+
 # ---------------------------------------------------------------------------------------------------
 # 获取群的ID与名称，为了实现多群喊话做准备
 group_id_list = []
@@ -155,7 +159,7 @@ class Send_operation():  # 可视化获取的消息类别等
             # print('>>>:' * 3 +'暂无消息')
         return None
 
-    def Send_operation_second(self, msg):  # 进行回复
+    def Send_operation_second(self, msg,*age):  # 进行回复
         # 输出逻辑回答的消息
         url = 'http://127.0.0.1:5700'
         if dict_receive['message_type'] == 'private':
@@ -168,14 +172,16 @@ class Send_operation():  # 可视化获取的消息类别等
             urls = url + '/send_group_msg?group_id=' + dict_receive['sender_group_id'] + '&' +"message=" + msg
             # print(urls)
             answer_post_use = requests.post(url=urls)  # 发送消息
-            print('>>>:' * 3 + "已回答:" + "\n " + msg)
+            print('>>>:' * 3  + "\n"+ "已回答:" +msg)
             pass
+
         else:
             # print(1)
             pass
 
 
 # ---------------------------------------------------------------------------------------------------
+
 class answer_logic():  # 回复逻辑
     # 逻辑回答，以后可能会再改，将判断分开，用多线程
     def get_API_answer(self):  # 本地词库一级回答
@@ -211,7 +217,7 @@ class answer_logic():  # 回复逻辑
                 msg = '您的等级不够'
                 return msg
         elif dict_receive['sender_msg'] == "新闻" or dict_receive['sender_msg'] == "#3":
-            msg = news_api.news_api()
+            msg = news_api.news_content()
             return msg
 
         elif "点歌" in dict_receive['sender_msg'] :
@@ -227,7 +233,9 @@ class answer_logic():  # 回复逻辑
             # print('>>>:' * 3 + "回答：" + answer_content)  # 检察是否可以正常运行
             msg = answer_content
             return msg
-
+    def failing_answer(self):
+        msg = "未知错误"
+        return msg
 
 # ---------------------------------------------------------------------------------------------------
 class Clear_Dictionary():  # 清除字典中的数据，后面有许多的地方需要清空字典

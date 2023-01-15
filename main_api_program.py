@@ -9,14 +9,17 @@
 print("正在进行预处理")
 # ---------------------------------------------------------------------------------------------------
 import time
+
 t1 = time.time()
 
 import json  # 讲获取的消息进行字典化
 import socket  # 使用socket监听上报，接收各种消息
 import pandas as pd  # 准备实现本地词库
 import requests  # 发送消息及获取机器人回答
-import news_api #实现新闻
-import music_api#实现点歌
+import news_api  # 实现新闻
+import music_api  # 实现点歌
+import api_group_1  # 实现每日一言
+
 # ---------------------------------------------------------------------------------------------------
 # 实现本地词库时使用
 
@@ -40,7 +43,7 @@ dict_receive = {'message_type': '', 'sender_msg': '', 'sender_name': '', 'sender
                 'sender_group_id': '', 'sender_self_id': ''}
 # 用副本字典准备使用多线程，讲多群喊话与正常的聊天分隔开
 dict_receive_copy = {'message_type': '', 'sender_msg': '', 'sender_name': '', 'sender_id': '', 'sender_msg_id': '',
-                'sender_group_id': '', 'sender_self_id': ''}
+                     'sender_group_id': '', 'sender_self_id': ''}
 
 # ---------------------------------------------------------------------------------------------------
 # 获取群的ID与名称，为了实现多群喊话做准备
@@ -48,7 +51,9 @@ group_id_list = []
 group_name_list = []
 # ---------------------------------------------------------------------------------------------------
 t2 = time.time()
-print("预处理完毕，用时:"+str((t2-t1)*1000)[:8]+"毫秒" )
+print("预处理完毕，用时:" + str((t2 - t1) * 1000)[:8] + "毫秒")
+
+
 # ---------------------------------------------------------------------------------------------------
 # 在这里进行消息之间的同道连接，以及获得的消息的第一步处理，进行字典化
 class Listener():  # 获取网页的json并获取消息
@@ -159,7 +164,7 @@ class Send_operation():  # 可视化获取的消息类别等
             # print('>>>:' * 3 +'暂无消息')
         return None
 
-    def Send_operation_second(self, msg,*age):  # 进行回复
+    def Send_operation_second(self, msg, *age):  # 进行回复
         # 输出逻辑回答的消息
         url = 'http://127.0.0.1:5700'
         if dict_receive['message_type'] == 'private':
@@ -169,10 +174,10 @@ class Send_operation():  # 可视化获取的消息类别等
             pass
         elif dict_receive['message_type'] == 'group':
 
-            urls = url + '/send_group_msg?group_id=' + dict_receive['sender_group_id'] + '&' +"message=" + msg
+            urls = url + '/send_group_msg?group_id=' + dict_receive['sender_group_id'] + '&' + "message=" + msg
             # print(urls)
             answer_post_use = requests.post(url=urls)  # 发送消息
-            print('>>>:' * 3  + "\n"+ "已回答:" +msg)
+            print('>>>:' * 3 + "\n" + "已回答:" + msg)
             pass
 
         else:
@@ -207,8 +212,9 @@ class answer_logic():  # 回复逻辑
 
         if dict_receive['sender_msg'] == "菜单" or dict_receive['sender_msg'] == "#":  # 回答消息的第二优先级
 
-            msg = "1.聊天\n2.多群喊话\n3.新闻\n4.点歌(网抑云)"  # \n可以实现多行输出
+            msg = "1.聊天\n2.多群喊话\n3.新闻\n4.点歌(网抑云)\n5.网抑云\n6.随机美句\n7.我在人间凑数的日子"  # \n可以实现多行输出
             return msg
+
         elif dict_receive['sender_msg'] == "多群喊话" or dict_receive['sender_msg'] == "#2":  # 在此判断发消息人的QQ号
             if '1732373074' == dict_receive['sender_id']:  # 防止别人发送(有缺陷，如果主人先发多群喊话，不管谁再发消息，都会喊)
                 msg = '接收消息中......'
@@ -216,14 +222,29 @@ class answer_logic():  # 回复逻辑
             else:
                 msg = '您的等级不够'
                 return msg
+
         elif dict_receive['sender_msg'] == "新闻" or dict_receive['sender_msg'] == "#3":
             msg = news_api.news_content()
             return msg
 
-        elif "点歌" in dict_receive['sender_msg'] :
+        elif "点歌" in dict_receive['sender_msg']:
             musics_id = music_api.music_id(music_api.handle_content(dict_receive['sender_msg']))
             msg = "[CQ:music,type=163,id={}]".format(musics_id)
             return msg
+
+        elif dict_receive['sender_msg'] == "网抑云" or dict_receive['sender_msg'] == "#5":
+            msg = api_group_1.wangyiyun()
+            return msg
+
+        elif dict_receive['sender_msg'] == "随机美句" or dict_receive['sender_msg'] == "#6":
+            msg = api_group_1.philosophy_of_life()
+            return msg
+
+        elif dict_receive['sender_msg'] == "我在人间凑数的日子" or dict_receive['sender_msg'] == "#7":
+            msg = api_group_1.i_counted_the_days_on_earth()
+            return msg
+
+
 
         else:  # 回答消息的第三优先级
 
@@ -233,9 +254,11 @@ class answer_logic():  # 回复逻辑
             # print('>>>:' * 3 + "回答：" + answer_content)  # 检察是否可以正常运行
             msg = answer_content
             return msg
+
     def failing_answer(self):
         msg = "未知错误"
         return msg
+
 
 # ---------------------------------------------------------------------------------------------------
 class Clear_Dictionary():  # 清除字典中的数据，后面有许多的地方需要清空字典

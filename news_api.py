@@ -12,7 +12,7 @@ def news_content():
         }
 
         res = requests.get(url=url, headers=headers).text
-        # print(res)
+        #print(res)
 
         soup = BeautifulSoup(res, "lxml")
         # 准备检查日期
@@ -21,13 +21,13 @@ def news_content():
         check_content = soup.select(
             " div.container.clearfix  div.content_box.wrap div.tab_content  ul  li:nth-child(1)  div  div  span")[
             0].string
-        # print(check_content)
+        #print(check_content)
 
         if T in check_content:
-            # print(1)
+            #print(1)
             # 获取新闻的url
             url_news = soup.select(" div.container.clearfix div.tab_content  ul  li div  h4  a")[0].get("href")
-            print(url_news)
+            #print(url_news)
             res_news = requests.get(url=url_news, headers=headers).text
             soup = BeautifulSoup(res_news, "lxml")
             # 定位到新闻的部分
@@ -38,7 +38,9 @@ def news_content():
 
             # 想着把新闻格式化一下，不过在这上面浪费掉的时间太多了，所以就不改了
             msg = re.match(r'<p id="(.*)">(.*)</p>', str(msg))
+            #print(msg)
             msg = str(msg.group(2))
+            #print(msg)
 
             return msg
         # msg =re.match(r'<br/>(.*)<br/>')

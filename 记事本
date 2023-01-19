@@ -14,3 +14,5 @@
 私聊
 {"post_type":"message","message_type":"private","time":1673789107,"self_id":2712065523,"sub_type":"friend","target_id":2712065523,"message":"在","raw_message":"在","font":0,"sender":{"age":0,"nickname":"C-C（x_x；）","sex":"unknown","user_id":1732373074},"message_id":-98257865,"user_id":1732373074}
 
+好友请求
+{"post_type":"request","request_type":"friend","time":1674114285,"self_id":2712065523,"user_id":3552638520,"comment":"我是成全","flag":"1674114285000000"}

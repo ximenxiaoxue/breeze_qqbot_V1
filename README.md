@@ -6,6 +6,8 @@
 
 ---
 
+**最后附有各种上报**
+
 **socket简单教程**：https://www.runoob.com/python3/python3-socket.html
 
 **所有的文件都在这(包括config.yml)密码：博主好菜**：https://www.123pan.com/s/UovlVv-5P83h
@@ -441,3 +443,20 @@ if __name__ == '__main__':
 
 **也让我们，共同进步**
 
+---
+
+
+```
+无消息
+{"post_type":"meta_event","meta_event_type":"heartbeat","time":1673788242,"self_id":2712065523,"interval":5000,"status":{"app_enabled":true,"app_good":true,"app_initialized":true,"good":true,"online":true,"plugins_good":null,"stat":{"packet_received":59,"packet_sent":50,"packet_lost":0,"message_received":0,"message_sent":0,"disconnect_times":0,"lost_times":0,"last_message_time":0}}}
+有消息
+{"post_type":"message","message_type":"group","time":1673788243,"self_id":2712065523,"sub_type":"normal","font":0,"group_id":736038975,"message_seq":1805,"raw_message":"你好","anonymous":null,"message":"你好","sender":{"age":0,"area":"","card":"额额","level":"","nickname":"C-C（x_x；）","role":"owner","sex":"unknown","title":"","user_id":1732373074},"user_id":1732373074,"message_id":301654598}
+
+群聊
+{"post_type":"message","message_type":"group","time":1673789105,"self_id":2712065523,"sub_type":"normal","anonymous":null,"font":0,"group_id":736038975,"raw_message":"在","sender":{"age":0,"area":"","card":"额额","level":"","nickname":"C-C（x_x；）","role":"owner","sex":"unknown","title":"","user_id":1732373074},"message":"在","message_seq":1806,"user_id":1732373074,"message_id":-1997294596}
+私聊
+{"post_type":"message","message_type":"private","time":1673789107,"self_id":2712065523,"sub_type":"friend","target_id":2712065523,"message":"在","raw_message":"在","font":0,"sender":{"age":0,"nickname":"C-C（x_x；）","sex":"unknown","user_id":1732373074},"message_id":-98257865,"user_id":1732373074}
+
+好友请求
+{"post_type":"request","request_type":"friend","time":1674114285,"self_id":2712065523,"user_id":3552638520,"comment":"我是成全","flag":"1674114285000000"}
+```

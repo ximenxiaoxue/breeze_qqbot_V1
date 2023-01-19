@@ -172,9 +172,9 @@ Accept-Encoding: gzip
 {"post_type":"meta_event","meta_event_type":"heartbeat","time":1673787352,"self_id":2712065523,"status":{"app_enabled":true,"app_good":true,"app_initialized":true,"good":true,"online":true,"plugins_good":null,"stat":{"packet_received":26,"packet_sent":17,"packet_lost":0,"message_received":0,"message_sent":0,"disconnect_times":0,"lost_times":0,"last_message_time":0}},"interval":5000}
 
 {"post_type":"meta_event","meta_event_type":"heartbeat","time":1673787352,"self_id":2712065523,"status":{"app_enabled":true,"app_good":true,"app_initialized":true,"good":true,"online":true,"plugins_good":null,"stat":{"packet_received":26,"packet_sent":17,"packet_lost":0,"message_received":0,"message_sent":0,"disconnect_times":0,"lost_times":0,"last_message_time":0}},"interval":5000}
-
+```
 这里大家也都看见了，第一部分是
-
+```
 POST / HTTP/1.1
 Host: 127.0.0.1:5720
 User-Agent: CQHttp/4.15.0
@@ -184,8 +184,8 @@ X-Self-Id: 2712065523
 Accept-Encoding: gzip
 
 {"post_type":"meta_event","meta_event_type":"heartbeat","time":1673787352,"self_id":2712065523,"status":{"app_enabled":true,"app_good":true,"app_initialized":true,"good":true,"online":true,"plugins_good":null,"stat":{"packet_received":26,"packet_sent":17,"packet_lost":0,"message_received":0,"message_sent":0,"disconnect_times":0,"lost_times":0,"last_message_time":0}},"interval":5000}
-所以我们就想要拿到这第一部分的下面的内容，然后我就想了一个办法，用切片的方法把这里获取下来。
 ```
+所以我们就想要拿到这第一部分的下面的内容，然后我就想了一个办法，用切片的方法把这里获取下来。
 
 
 ```
@@ -195,7 +195,6 @@ Accept-Encoding: gzip
 {"post_type":"message","message_type":"group","time":1673788243,"self_id":2712065523,"sub_type":"normal","font":0,"group_id":736038975,"message_seq":1805,"raw_message":"你好","anonymous":null,"message":"你好","sender":{"age":0,"area":"","card":"额额","level":"","nickname":"C-C（x_x；）","role":"owner","sex":"unknown","title":"","user_id":1732373074},"user_id":1732373074,"message_id":301654598}
 ```
 所以在取消息的时候一定不要弄的太绝对 ，额，至于怎么绝对，就自己想吧，我反正是出错了。
-
 
 
 好了，按照我们的思路，我们要拿到发送的消息，把没用的剔除去，毕竟是字典，我们用键值取值的方法就可以拿到消息的各个参数，并添加到我们设置的字典中，也就是咱们下面的代码。

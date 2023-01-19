@@ -16,9 +16,9 @@ import json  # 讲获取的消息进行字典化
 import socket  # 使用socket监听上报，接收各种消息
 import pandas as pd  # 准备实现本地词库
 import requests  # 发送消息及获取机器人回答
-import news_api  # 实现新闻
-import music_api  # 实现点歌
-import api_group_1  # 实现每日一言
+from api import news_api  # 实现新闻
+from api import music_api  # 实现点歌
+from api import api_group_1  # 实现每日一言等
 
 # ---------------------------------------------------------------------------------------------------
 # 实现本地词库时使用
@@ -210,12 +210,12 @@ class answer_logic():  # 回复逻辑
             else:
                 pass
 
-        if dict_receive['sender_msg'] == "菜单" or dict_receive['sender_msg'] == "#":  # 回答消息的第二优先级
+        if dict_receive['sender_msg'] == "菜单" or dict_receive['sender_msg'] == "/":  # 回答消息的第二优先级
 
             msg = "1.聊天\n2.多群喊话\n3.新闻\n4.点歌(网抑云)\n5.网抑云\n6.随机美句\n7.我在人间凑数的日子"  # \n可以实现多行输出
             return msg
 
-        elif dict_receive['sender_msg'] == "多群喊话" or dict_receive['sender_msg'] == "#2":  # 在此判断发消息人的QQ号
+        elif dict_receive['sender_msg'] == "多群喊话" or dict_receive['sender_msg'] == "/2":  # 在此判断发消息人的QQ号
             if '1732373074' == dict_receive['sender_id']:  # 防止别人发送(有缺陷，如果主人先发多群喊话，不管谁再发消息，都会喊)
                 msg = '接收消息中......'
                 return msg
@@ -223,7 +223,7 @@ class answer_logic():  # 回复逻辑
                 msg = '您的等级不够'
                 return msg
 
-        elif dict_receive['sender_msg'] == "新闻" or dict_receive['sender_msg'] == "#3":
+        elif dict_receive['sender_msg'] == "新闻" or dict_receive['sender_msg'] == "/3":
             msg = news_api.news_content()
             return msg
 
@@ -232,15 +232,15 @@ class answer_logic():  # 回复逻辑
             msg = "[CQ:music,type=163,id={}]".format(musics_id)
             return msg
 
-        elif dict_receive['sender_msg'] == "网抑云" or dict_receive['sender_msg'] == "#5":
+        elif dict_receive['sender_msg'] == "网抑云" or dict_receive['sender_msg'] == "/5":
             msg = api_group_1.wangyiyun()
             return msg
 
-        elif dict_receive['sender_msg'] == "随机美句" or dict_receive['sender_msg'] == "#6":
+        elif dict_receive['sender_msg'] == "随机美句" or dict_receive['sender_msg'] == "/6":
             msg = api_group_1.philosophy_of_life()
             return msg
 
-        elif dict_receive['sender_msg'] == "我在人间凑数的日子" or dict_receive['sender_msg'] == "#7":
+        elif dict_receive['sender_msg'] == "我在人间凑数的日子" or dict_receive['sender_msg'] == "/7":
             msg = api_group_1.i_counted_the_days_on_earth()
             return msg
 

@@ -84,26 +84,8 @@ class Listener():  # 获取网页的json并获取消息
 
 
 # ---------------------------------------------------------------------------------------------------
+# 精细化分离消息，准备实现私聊与群聊的回复
 class Detach_Message():
-    # 精细化分离消息，准备实现私聊与群聊的回复
-    def group_separation(self, Set_to_be_separated):
-
-        # 判断群私聊
-        if Set_to_be_separated["post_type"] == "message":
-            if Set_to_be_separated["message_type"] == "group":
-                dict_receive['message_type'] = 'group'
-                return None
-
-            elif Set_to_be_separated["message_type"] == "private":
-                dict_receive['message_type'] = 'private'
-                return None
-
-            else:
-                pass
-        else:  # 因为发送新消息时监听的消息集合与没有消息时的集合，不一样！！！！！！！！
-            pass
-        return None
-
     def Other_separation(self, Set_to_be_separated):  # 其他消息的获取
 
         if Set_to_be_separated["post_type"] == "message":
@@ -114,8 +96,8 @@ class Detach_Message():
             sender_self_id = Set_to_be_separated["self_id"]  # 获取自己的QQ号
             # return sender_msg,sender_name,sender_id,sender_msg_id
             if Set_to_be_separated["message_type"] == "group":
+                dict_receive['message_type'] = 'group'
                 sender_group_id = Set_to_be_separated["group_id"]  # 获取发送群的群号
-
                 dict_receive['sender_msg'] = sender_msg
                 dict_receive['sender_name'] = sender_name
                 dict_receive['sender_id'] = str(sender_id)
@@ -123,8 +105,10 @@ class Detach_Message():
                 dict_receive['sender_group_id'] = str(sender_group_id)
                 dict_receive['sender_self_id'] = str(sender_self_id)
 
+
                 pass
             else:
+                dict_receive['message_type'] = 'private'
                 dict_receive['sender_msg'] = sender_msg
                 dict_receive['sender_name'] = sender_name
                 dict_receive['sender_id'] = str(sender_id)
@@ -135,6 +119,9 @@ class Detach_Message():
             pass
 
         return None
+
+
+
 
 
 # ---------------------------------------------------------------------------------------------------

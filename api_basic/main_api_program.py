@@ -270,7 +270,7 @@ class receive_messages(Send_operation):  # 多群喊话中转站，因为启动�
             Clear_Dictionary().clear_()
             # 消息处理
             words = Listener().Preprocessing_segment(Listener().receiver())
-            Group_private_chat = Detach_Message().group_separation(words)
+            #Group_private_chat = Detach_Message().group_separation(words)
             Other_chat = Detach_Message().Other_separation(words)
             # 输出获取到的需要喊话的内容
             Send_operation().Send_operation_first()

@@ -1,3 +1,15 @@
+"""
+pip install
+"""
+"""
+requests
+pandas
+lxml
+bs4
+openpyxl
+"""
+#需下载的python库
+# ---------------------------------------------------------------------------------------------------
 from api_basic import main_api_program #大部分主要功能在此设计
 from api import multi_group_shouting_api #多群喊话的api文件
 from api import kill_pid_system

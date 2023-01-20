@@ -13,6 +13,7 @@ openpyxl
 from api_basic import main_api_program #大部分主要功能在此设计
 from api import multi_group_shouting_api #多群喊话的api文件
 from api import kill_pid_system
+from api import news_api
 import threading
 # ---------------------------------------------------------------------------------------------------
 #聊天回复函数

@@ -1,8 +1,10 @@
 from api_basic import main_api_program #大部分主要功能在此设计
 from api import multi_group_shouting_api #多群喊话的api文件
+from api import kill_pid_system
 # ---------------------------------------------------------------------------------------------------
 #聊天回复函数
 def Chat_reply():
+    num = 0
     while True:
         try:
             # 获取消息
@@ -20,9 +22,15 @@ def Chat_reply():
             main_api_program.Send_operation().Send_operation_second(word)  # 多群喊话完后这里也会输出，不过是空
             # 清除字典里的内容
             main_api_program.Clear_Dictionary().clear_()
+
         except:
             print("-----" + "遇到未知错误！@#￥%……&*" + "-----")
             print("-----" + "记录错误！@#￥%……&*" + "-----")
+            #防止在Linux服务器部署后无法退出，而致的麻烦操作
+            num = num+1
+            if num == 5:
+                kill_pid_system.kill_pid()
+
 
 if __name__ == '__main__':
     Chat_reply()

@@ -13,6 +13,7 @@ openpyxl
 from api_basic import main_api_program #大部分主要功能在此设计
 from api import multi_group_shouting_api #多群喊话的api文件
 from api import kill_pid_system
+import threading
 # ---------------------------------------------------------------------------------------------------
 #聊天回复函数
 def Chat_reply():
@@ -43,7 +44,17 @@ def Chat_reply():
             if num == 5:
                 kill_pid_system.kill_pid()
 
+def pretreatment():
+    news_api.news_content()
+    print("预处理完成")
+
+
 
 if __name__ == '__main__':
-    Chat_reply()
+    sub_news = threading.Thread(target=pretreatment())
+    sub_Chat = threading.Thread(target=Chat_reply())
+
+    sub_news.start()
+    sub_Chat
+    #Chat_reply()
 

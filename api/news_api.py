@@ -68,19 +68,21 @@ def news_content():#判断是否去列表拿取还是网站拿取
     if news_time != co_co['datetime']: #先判断列表中的新闻是否为今天的
         co_co['datetime'] = news_time #将获取的时间放入字典
 
-        news_take()
+        news_take()#获取内容
         msg = co_co['news']
+        #print(1)
         return msg
 
     else:
         if co_co['news'] == "" or co_co['news'] == content:
             news_take()
             msg = co_co['news']
+            #print(2)
             return msg
         else:
             msg = co_co['news']
+            #print(3)
             return msg
-
 
 if __name__ == '__main__':
     print(news_content())

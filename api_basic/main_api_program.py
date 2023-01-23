@@ -53,9 +53,9 @@ group_id_list = []
 group_name_list = []
 # ---------------------------------------------------------------------------------------------------
 t2 = time.time()
-jdm = False
-lock = threading.Lock()
-ans_msg = {"answer":""}
+jdm = False  #使用这个判断多线程获取回答的继续执行
+
+ans_msg = {"answer":""} #存放获取到的回答，确实找不到什么好的资源共享的方式了
 
 print("预处理完毕，用时:" + str((t2 - t1) * 1000)[:8] + "毫秒")
 
@@ -121,8 +121,7 @@ class Detach_Message():
                 dict_receive['sender_self_id'] = str(sender_self_id)
                 pass
         else:
-
-            return False
+            return False #为后面加快运行速度做铺垫
 
         return None
 
@@ -204,9 +203,7 @@ class answer_logic():  # 回复逻辑
 
                 #return msg  # 弹出本地词库消息，便于下面发送
             else:
-
                 jdm = False
-
                 pass
 
     def get_API_answer_2(self):
@@ -215,11 +212,9 @@ class answer_logic():  # 回复逻辑
             pass
         else:
             if dict_receive['sender_msg'] == "菜单" or dict_receive['sender_msg'] == "/":  # 回答消息的第二优先级
-
                 jdm = True
                 msg = "1.聊天\n2.多群喊话\n3.新闻\n4.点歌(网抑云)\n5.网抑云\n6.随机美句\n7.我在人间凑数的日子"  # \n可以实现多行输出
                 ans_msg['answer'] = msg
-
 
                 # return msg
 
@@ -229,15 +224,11 @@ class answer_logic():  # 回复逻辑
                     jdm = True
                     msg = '接收消息中......'
                     ans_msg['answer'] = msg
-
-
                     # return msg
                 else:
                     jdm = True
                     msg = '您的等级不够'
                     ans_msg['answer'] = msg
-
-
 
                     # return msg
 
@@ -257,26 +248,18 @@ class answer_logic():  # 回复逻辑
                 msg = "[CQ:music,type=163,id={}]".format(musics_id)
                 ans_msg['answer'] = msg
 
-
-
                 # return msg
 
             elif dict_receive['sender_msg'] == "网抑云" or dict_receive['sender_msg'] == "/5":
-
                 jdm = True
                 msg = api_group_1.wangyiyun()
                 ans_msg['answer'] = msg
-
-
-
                 # return msg
-
             elif dict_receive['sender_msg'] == "随机美句" or dict_receive['sender_msg'] == "/6":
 
                 jdm = True
                 msg = api_group_1.philosophy_of_life()
                 ans_msg['answer'] = msg
-
                 # return msg
 
             elif dict_receive['sender_msg'] == "我在人间凑数的日子" or dict_receive['sender_msg'] == "/7":
@@ -305,7 +288,7 @@ class answer_logic():  # 回复逻辑
             pass
 
 
-    def get_answer(self):
+    def get_answer(self):#多线程进行寻找回答，加快速度
         global jdm
         print(1)
         jdm == False
@@ -322,11 +305,7 @@ class answer_logic():  # 回复逻辑
         #sunm_3.join()
 
         #ans_msg["answer"] = ""
-
-
         return str(ans_msg['answer'])
-
-
 
     def failing_answer(self):
         msg = "未知错误"
